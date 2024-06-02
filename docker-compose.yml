@@ -1,0 +1,27 @@
+version: '3'
+services:
+  laravel-admin:
+    hostname: yourls-admin
+    container_name: yourls-admin
+    image: laravel-admin
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./yourls:/var/www/html
+    command: bash -c "php artisan serve --host=0.0.0.0 --port=8000"
+    depends_on:
+      - mysql-laravel-admin
+  mysql-laravel-admin:
+    hostname: mysql-laravel-admin
+    container_name: mysql-laravel-admin
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: yourlsuser
+      MYSQL_PASSWORD: yourlspassword
+    volumes:
+      - ./data/mysql:/var/lib/mysql
